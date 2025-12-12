@@ -7,9 +7,7 @@ This project performs distributed matrix multiplication using two different virt
   2. **Worker:** Receives matrix rows, multiplies them, and sends the result back.
 
 **How to run:**
-  1. First on the worker VM, run:
-       python3 worker.py
-  2. Then on the master VM, run:
-       python3 master.py
+  1. First on the worker VM, run **python3 worker.py**
+  2. Then on the master VM, run **python3 master.py**
 
 Make sure both VMs use the same port.
