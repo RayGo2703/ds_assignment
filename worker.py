@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 
 HOST = "0.0.0.0"
-PORT = 5002
+PORT = 5003
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
@@ -14,8 +14,12 @@ print(f"[WORKER] Waiting for master on port {PORT}...")
 while True:
     conn, addr = server.accept()
     print(f"[WORKER] Connected to master: {addr}")
-
-    data = conn.recv(65536)
+    data = b''
+    while True:
+        part = conn.recv(65536)
+        if not part:
+            break
+        data += part
 
     if data == b"SHUTDOWN":
         print(f"[WORKER] Shutdown signal received. Exiting...")
