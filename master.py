@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 
 WORKER_IP = "192.168.56.106"
-PORT = 5002
+PORT = 5003
 
 N = int(input("Enter matrix size N for NxN: "))
 A = np.random.randint(0, 10, (N, N))
@@ -22,8 +22,15 @@ if worker_rows.shape[0] > 0:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((WORKER_IP, PORT))
     s.send(pickle.dumps((worker_rows, B)))
+    s.shutdown(socket.SHUT_WR)
 
-    data = s.recv(65536)
+    data = b''
+    while True:
+        part = s.recv(65535)
+        if not part:
+            break
+        data += part
+
     worker_result = pickle.loads(data)
     s.close()
 
